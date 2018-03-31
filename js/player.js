@@ -1,22 +1,23 @@
 function Player(game) {
   this.game = game;
 
-  this.initialX = this.game.canvas.width / 2;
-  this.initialY = this.game.canvas.height / 2;
-  this.x = this.initialX;
-  this.y = this.initialY;
-  
   this.img = new Image();
   this.img.src = "https://cdn.wikimg.net/strategywiki/images/6/6f/MBJ_Jack.png";
   this.width = 50;
-  this.height = 60;
-  
-  this.sy = 20;
-  this.dy = 5;
-  this.dx = 5;
+  this.height = 50;
 
-  this.gravity = 0.9;
-  this.isOnFloor = false;
+  this.originX = this.game.canvas.width/2 - this.width/2; // position on start
+  this.originY = this.game.canvas.height - this.height;   // positon on start
+  this.x = this.originX;
+  this.y = this.originY;
+
+  this.speed = 5;     // speed to move in x or y
+  this.dx = 0;        // distance to move in x
+  this.dy = 0;        // distance to move in y
+  this.brakeX = 0.95; // brake x,0 movement
+  this.isJumping = false;
+
+  this.gravity = 0.25;
 
   this.setListeners();
 }
@@ -26,48 +27,63 @@ Player.prototype.draw = function() {
 }
 
 Player.prototype.move = function() {
+  this.dy += this.gravity;      // y move change with gravity
 
-  if( !this.isOnFloor ) {
-    this.dy += this.gravity;
-    this.y += this.dy;
+  if( !this.isJumping ) {
+    this.dx *= this.brakeX;     // if player is on floor, it brakes when it moves to left or right
+  }
+  this.x += this.dx;            // increment movement in x
+  this.y += this.dy;            // increment movement in y
+
+  // check limits in x
+  if( this.x + this.width > this.game.canvas.width ) {
+    this.x = this.game.canvas.width - this.width;
+  } else if( this.x <= 0 ) {
+    this.x = 0;
   }
 
+  // check limits in y
   if( this.y + this.height > this.game.canvas.height ) {
-    this.isOnFloor = true;
-  }
-
+    this.y = this.game.canvas.height - this.height;
+    this.isJumping = false;
+  } 
 }
 
 Player.prototype.setListeners = function() {
   document.onkeydown = function(event) {
-    switch(event.keyCode) {
+    switch( event.keyCode ) {
+      // jump
+      // if player is on floor, it decrease distance (move up) in y
       case 74: // J key
       case 87: // W key
-        if( this.y > 0 ) {
-          this.y -= this.dy;
+      case 38: // Up key
+        if( !this.isJumping ) {
+          this.isJumping = true;
+          this.dy = -this.speed * 2;
         }
         break;
+      // move left
+      // it checks inertia
       case 65: // A key
-        if( this.x > 0 ) {
-          this.x -= this.dx;
+      case 37: // Left key
+        if( this.dx > -this.speed ) {
+          this.dx -= 2;
         }
         break;
-      case 83: // S key
-        if( this.y < this.game.canvas.height ) {
-          this.y += this.dy;
-        }
-        break;
+      // move right
+      // it checks inertia
       case 68: // D key
-        if( this.x + this.width < this.game.canvas.width ) {
-          this.x += this.dx;
+      case 39: // Right key
+        if( this.dx < this.speed ) {
+          this.dx += 2;
         }
         break;
-    } 
+    }
   }.bind(this);
 }
 
+// reset to original position
 Player.prototype.reset = function() {
-  this.x = this.initialX;
-  this.y = this.initialY;
-  this.dy = 1;
+  this.x = this.originX;
+  this.y = this.originY;
 }

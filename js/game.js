@@ -17,7 +17,7 @@ Game.prototype.start = function() {
 
 }
 
-Game.prototype.stop = function() {
+Game.prototype.pause = function() {
   clearInterval(this.intervalId);
 }
 
@@ -26,6 +26,7 @@ Game.prototype.finished = function() {
 }
 
 Game.prototype.reset = function() {
+  this.pause();
   this.intervalId = 0;
   this.player.reset();
   this.clear();

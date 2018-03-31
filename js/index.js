@@ -3,15 +3,15 @@ window.onload = function() {
   var game = new Game(canvas);
 
   var startButton = document.getElementById("start-game");
-  var stopButton = document.getElementById("stop-game");
+  var pauseButton = document.getElementById("pause-game");
   var resetButton = document.getElementById("reset-game");
 
   startButton.onclick = function() {
     game.start();
   }
 
-  stopButton.onclick = function() {
-    game.stop();
+  pauseButton.onclick = function() {
+    game.pause();
   }
 
   resetButton.onclick = function() {
