@@ -3,8 +3,14 @@ function Game(canvas) {
   this.ctx = this.canvas.getContext("2d");
   
   this.player = new Player(this);
-  
-  
+  // the game has 5 platforms
+  this.platformArray = [
+    new Platform(this),
+    new Platform(this),
+    new Platform(this),
+    new Platform(this),
+    new Platform(this)
+  ];
 }
 
 Game.prototype.start = function() {
@@ -37,15 +43,14 @@ Game.prototype.clear = function() {
 }
 
 Game.prototype.draw = function() {
+  this.platformArray.forEach( function(platform) {
+    platform.draw();
+  });
   this.player.draw();
 }
 
 Game.prototype.move = function() {
   this.player.move();
-}
-
-Game.prototype.generatePlatform = function() {
-
 }
 
 Game.prototype.platformCollision = function() {

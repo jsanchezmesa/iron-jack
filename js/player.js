@@ -14,7 +14,7 @@ function Player(game) {
   this.speed = 5;     // speed to move in x or y
   this.dx = 0;        // distance to move in x
   this.dy = 0;        // distance to move in y
-  this.brakeX = 0.95; // brake x,0 movement
+  this.brakeX = 0.9; // brake x,0 movement
   this.isJumping = false;
 
   this.gravity = 0.25;
@@ -63,7 +63,7 @@ Player.prototype.setListeners = function() {
         }
         break;
       // move left
-      // it checks inertia
+      // it applies inertia
       case 65: // A key
       case 37: // Left key
         if( this.dx > -this.speed ) {
@@ -71,7 +71,7 @@ Player.prototype.setListeners = function() {
         }
         break;
       // move right
-      // it checks inertia
+      // it applies inertia
       case 68: // D key
       case 39: // Right key
         if( this.dx < this.speed ) {
@@ -80,6 +80,8 @@ Player.prototype.setListeners = function() {
         break;
     }
   }.bind(this);
+
+  document
 }
 
 // reset to original position
