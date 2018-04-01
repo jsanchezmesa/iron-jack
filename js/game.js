@@ -3,14 +3,11 @@ function Game(canvas) {
   this.ctx = this.canvas.getContext("2d");
   
   this.player = new Player(this);
-  // the game has 5 platforms
-  this.platformArray = [
-    new Platform(this),
-    new Platform(this),
-    new Platform(this),
-    new Platform(this),
-    new Platform(this)
-  ];
+  
+  this.numPlatforms = 5;
+  this.platformArray = [];
+
+  this.generatePlatforms();
 }
 
 Game.prototype.start = function() {
@@ -19,6 +16,7 @@ Game.prototype.start = function() {
     this.clear();
     this.move();
     this.draw();
+    this.platformCollision();
   }.bind(this), 1000 / 60);
 
 }
@@ -28,13 +26,15 @@ Game.prototype.pause = function() {
 }
 
 Game.prototype.finished = function() {
-
+  
 }
 
 Game.prototype.reset = function() {
   this.pause();
   this.intervalId = 0;
   this.player.reset();
+  this.platformArray = [];
+  this.generatePlatforms();
   this.clear();
 }
 
@@ -53,8 +53,22 @@ Game.prototype.move = function() {
   this.player.move();
 }
 
-Game.prototype.platformCollision = function() {
+Game.prototype.generatePlatforms = function() {
+  for(var i = 0; i < this.numPlatforms; i++) {
+    this.platformArray.push( new Platform(this) );
+  }
+}
 
+Game.prototype.platformCollision = function() {
+  for(var i = 0; i < this.platformArray.length; i++) {
+    if( (this.player.x < this.platformArray[i].x + this.platformArray[i].width) &&
+        (this.player.x + this.player.width > this.platformArray[i].x) &&
+        (this.player.y < this.platformArray[i].y + this.platformArray[i].height) &&
+        (this.player.y + this.player.height > this.platformArray[i].y) ) {
+      alert("CHOCA");
+      this.reset();
+    }
+  }
 }
 
 Game.prototype.enemyCollision = function() {
