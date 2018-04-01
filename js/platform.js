@@ -9,7 +9,7 @@ function Platform(game) {
   this.minWidth = 30;
   this.height = 30;    
   
-  this.color = "yellow";
+  this.color = "grey";
   
   this.generateWidthPlatform();
 }

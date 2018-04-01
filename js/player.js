@@ -2,7 +2,7 @@ function Player(game) {
   this.game = game;
 
   this.img = new Image();
-  this.img.src = "https://cdn.wikimg.net/strategywiki/images/6/6f/MBJ_Jack.png";
+  this.img.src = "https://vignette.wikia.nocookie.net/the-video-game/images/b/bb/Kirby_Sprite.png/revision/latest?cb=20140110173310";
   this.width = 50;
   this.height = 50;
 
@@ -29,15 +29,15 @@ Player.prototype.draw = function() {
 
 Player.prototype.move = function() {
   // if player is on floor or a platform, it brakes when it moves to left or right
-  if (!this.isJumping || this.isOnPlatform ) {
+  if (!this.isJumping || this.isOnPlatform) {
     this.dx *= this.brakeX;
   }
   this.x += this.dx; // increment movement in x
 
   // apply gravity when falling
   this.dy += this.gravity;
-  
-  if ( this.isJumping || !this.isOnPlatform) {
+
+  if (this.isJumping || !this.isOnPlatform) {
     this.y += this.dy;
   }
 
@@ -48,7 +48,7 @@ Player.prototype.move = function() {
     this.x = 0;
   }
 
-  // check limits in y
+  // check limits in y (bottom)
   if (this.y + this.height > this.game.canvas.height) {
     this.y = this.game.canvas.height - this.height;
     this.isJumping = false;
@@ -65,8 +65,7 @@ Player.prototype.setListeners = function() {
       case 38: // Up key
         if (!this.isJumping) {
           this.isJumping = true;
-          this.isOnPlatform = false;
-          this.dy = -this.speed * 2;
+          this.dy = -1 * this.speed * 2.5;
         }
         break;
       // move left

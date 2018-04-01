@@ -62,9 +62,9 @@ Game.prototype.platformCollision = function() {
   var collision = false;
   var platform;
   for (var i = 0; i < this.platformArray.length; i++) {
-    if( (this.player.x <= this.platformArray[i].x + this.platformArray[i].width) &&
-    (this.player.x + this.player.width >= this.platformArray[i].x) &&
-    (this.player.y <= this.platformArray[i].y + this.platformArray[i].height) &&
+    if( (this.player.x < this.platformArray[i].x + this.platformArray[i].width) &&
+    (this.player.x + this.player.width > this.platformArray[i].x) &&
+    (this.player.y <= this.platformArray[i].y /*+ this.platformArray[i].height*/) &&
     (this.player.y + this.player.height >= this.platformArray[i].y)  ) {
       collision = true;
       platform = this.platformArray[i];
@@ -72,19 +72,13 @@ Game.prototype.platformCollision = function() {
   }
 
   if( collision ) {
-    this.player.y = platform.y - this.player.height;
     this.player.isOnPlatform = true;
     this.player.isJumping = false;
+    this.player.y = platform.y - this.player.height;
   } else if(!this.player.isJumping && this.player.isOnPlatform ) {
     this.player.isJumping = true;
     this.player.isOnPlatform = false;
   }
-
-  console.log("***************");
-  console.log("COLLISION ==> " + collision );
-  console.log("JUMPING ==> " + this.player.isJumping );
-  console.log("PLATFORM ==> " + this.player.isOnPlatform );
-  console.log("***************");
 };
 
 Game.prototype.enemyCollision = function() {};
