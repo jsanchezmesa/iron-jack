@@ -71,6 +71,10 @@ Game.prototype.draw = function() {
 
 Game.prototype.move = function() {
   this.player.move();
+
+  this.enemiesArray.forEach( function(enemy) {
+    enemy.move();
+  });
 };
 
 Game.prototype.generatePlatforms = function() {
