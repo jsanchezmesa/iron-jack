@@ -5,7 +5,7 @@ function Platform(game) {
   this.y = 0;
 
   // it avoids a line
-  this.maxWidth = this.game.canvas.width / 3;
+  this.maxWidth = Math.floor(this.game.canvas.width / 3);
   this.minWidth = 30;
   this.height = 30;    
   
@@ -22,7 +22,7 @@ Platform.prototype.generateWidthPlatform = function() {
   // it sets minimum and maximum X,Y to generate random values
 
   this.minY = this.game.canvas.height * 0.2;
-  this.maxY = this.game.canvas.height - this.height - this.game.player.height * 2;
+  this.maxY = this.game.canvas.height - /* this.height - */ this.game.player.height * 2;
   this.maxX = this.game.canvas.width - this.width;
 
   this.x = this.generateRandom( 1, this.maxX);

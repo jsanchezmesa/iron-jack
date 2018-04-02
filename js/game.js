@@ -4,6 +4,9 @@ function Game(canvas) {
 
   this.player = new Player(this);
 
+  this.marginWidthPlatform = Math.floor(this.canvas.width * 0.2);
+  this.marginHeightPlatform = Math.floor(this.canvas.height * 0.1);
+
   this.numPlatforms = 5;
   this.platformArray = [];
 
@@ -53,29 +56,50 @@ Game.prototype.move = function() {
 };
 
 Game.prototype.generatePlatforms = function() {
-  for (var i = 0; i < this.numPlatforms; i++) {
-    this.platformArray.push(new Platform(this));
-  }
-};
+  
+  while ( this.platformArray.length < this.numPlatforms ) {
+    var collision = false;
+    var platform = new Platform(this);
+
+    if (this.platformArray.length == 0) {
+      this.platformArray.push(platform);
+    } else {
+      for(var j = 0; j < this.platformArray.length; j++ ) {        
+        if( platform.x + platform.width > this.platformArray[j].x && 
+            this.platformArray[j].x + this.platformArray[j].width > platform.x ) {
+          collision = true;
+        }
+      }
+
+      if( !collision ) {
+        this.platformArray.push( platform );
+      }
+    }      
+  };
+
+}
 
 Game.prototype.platformCollision = function() {
   var collision = false;
   var platform;
   for (var i = 0; i < this.platformArray.length; i++) {
-    if( (this.player.x < this.platformArray[i].x + this.platformArray[i].width) &&
-    (this.player.x + this.player.width > this.platformArray[i].x) &&
-    (this.player.y <= this.platformArray[i].y /*+ this.platformArray[i].height*/) &&
-    (this.player.y + this.player.height >= this.platformArray[i].y)  ) {
+    if (
+      this.player.x < this.platformArray[i].x + this.platformArray[i].width &&
+      this.player.x + this.player.width > this.platformArray[i].x &&
+      this.player.y <=
+        this.platformArray[i].y /*+ this.platformArray[i].height*/ &&
+      this.player.y + this.player.height >= this.platformArray[i].y
+    ) {
       collision = true;
       platform = this.platformArray[i];
     }
   }
 
-  if( collision ) {
+  if (collision) {
     this.player.isOnPlatform = true;
     this.player.isJumping = false;
     this.player.y = platform.y - this.player.height;
-  } else if(!this.player.isJumping && this.player.isOnPlatform ) {
+  } else if (!this.player.isJumping && this.player.isOnPlatform) {
     this.player.isJumping = true;
     this.player.isOnPlatform = false;
   }
