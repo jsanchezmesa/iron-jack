@@ -10,12 +10,12 @@ window.onload = function() {
     game.start();
   }
 
-  pauseButton.onclick = function() {
+  /* pauseButton.onclick = function() {
     game.pause();
   }
 
   resetButton.onclick = function() {
-    game.reset();
-  }
+    game.reset(); 
+  }*/
 
 }
