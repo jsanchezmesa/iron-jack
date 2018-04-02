@@ -7,7 +7,7 @@ function Platform(game) {
   // it avoids a line
   this.maxWidth = Math.floor(this.game.canvas.width / 3);
   this.minWidth = 30;
-  this.height = 30;    
+  this.height = 10;    
   
   this.color = "grey";
   

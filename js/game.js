@@ -64,9 +64,9 @@ Game.prototype.generatePlatforms = function() {
     if (this.platformArray.length == 0) {
       this.platformArray.push(platform);
     } else {
-      for(var j = 0; j < this.platformArray.length; j++ ) {        
-        if( platform.x + platform.width > this.platformArray[j].x && 
-            this.platformArray[j].x + this.platformArray[j].width > platform.x ) {
+      for(var i = 0; i < this.platformArray.length; i++ ) {        
+        if( platform.x + platform.width > this.platformArray[i].x && 
+            this.platformArray[i].x + this.platformArray[i].width > platform.x ) {
           collision = true;
         }
       }
@@ -76,7 +76,6 @@ Game.prototype.generatePlatforms = function() {
       }
     }      
   };
-
 }
 
 Game.prototype.platformCollision = function() {
@@ -86,10 +85,8 @@ Game.prototype.platformCollision = function() {
     if (
       this.player.x < this.platformArray[i].x + this.platformArray[i].width &&
       this.player.x + this.player.width > this.platformArray[i].x &&
-      this.player.y <=
-        this.platformArray[i].y /*+ this.platformArray[i].height*/ &&
-      this.player.y + this.player.height >= this.platformArray[i].y
-    ) {
+      this.player.y <= this.platformArray[i].y /*+ this.platformArray[i].height*/ &&
+      this.player.y + this.player.height >= this.platformArray[i].y ) {
       collision = true;
       platform = this.platformArray[i];
     }

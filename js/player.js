@@ -28,8 +28,8 @@ Player.prototype.draw = function() {
 };
 
 Player.prototype.move = function() {
-  // if player is on floor or a platform, it brakes when it moves to left or right
-  if (!this.isJumping || this.isOnPlatform) {
+  // if player is not jumping (on a surface), it brakes when it moves to left or right
+  if (!this.isJumping ) {
     this.dx *= this.brakeX;
   }
   this.x += this.dx; // increment movement in x
@@ -37,8 +37,14 @@ Player.prototype.move = function() {
   // apply gravity when falling
   this.dy += this.gravity;
 
+  // if player is jumping, it falls
   if (this.isJumping || !this.isOnPlatform) {
     this.y += this.dy;
+  }
+
+  // reset dy when it's in a platform
+  if( !this.isJumping && this.isOnPlatform && this.dy > 5 ) {
+    this.dy = 0;
   }
 
   // check limits in x
@@ -53,25 +59,20 @@ Player.prototype.move = function() {
     this.y = this.game.canvas.height - this.height;
     this.isJumping = false;
   }
+
+
+  console.log( "PLATFORM ==> " + this.isOnPlatform );
+  console.log( "JUMPING ==> " + this.isJumping );
+  console.log( "DY ==> " + this.dy);
 };
 
 Player.prototype.setListeners = function() {
-  document.onkeydown = function(event) {
-    switch (event.keyCode) {
-      // jump
-      // if player is on floor, it decrease distance (move up) in y
-      case 74: // J key
-      case 87: // W key
-      case 38: // Up key
-        if (!this.isJumping) {
-          this.isJumping = true;
-          this.dy = -1 * this.speed * 2.5;
-        }
-        break;
+  
+  document.onkeydown = function(event) {    
+    switch (event.keyCode) {      
       // move left
       // it applies inertia
       case 65: // A key
-      case 37: // Left key
         if (this.dx > -this.speed) {
           this.dx -= 2;
         }
@@ -79,9 +80,16 @@ Player.prototype.setListeners = function() {
       // move right
       // it applies inertia
       case 68: // D key
-      case 39: // Right key
         if (this.dx < this.speed) {
           this.dx += 2;
+        }
+        break;
+      // jump
+      // if player is on floor, it decrease distance (move up) in y
+      case 74: // J key
+        if (!this.isJumping) {
+          this.isJumping = true;
+          this.dy = -1 * this.speed * 2.5;
         }
         break;
     }
