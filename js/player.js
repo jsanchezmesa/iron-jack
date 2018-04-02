@@ -59,11 +59,6 @@ Player.prototype.move = function() {
     this.y = this.game.canvas.height - this.height;
     this.isJumping = false;
   }
-
-
-  console.log( "PLATFORM ==> " + this.isOnPlatform );
-  console.log( "JUMPING ==> " + this.isJumping );
-  console.log( "DY ==> " + this.dy);
 };
 
 Player.prototype.setListeners = function() {

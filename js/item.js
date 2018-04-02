@@ -16,8 +16,8 @@ function Item(game) {
 }
 
 Item.prototype.generateItem = function() {
-  this.x = this.generateRandom( this.x, this.maxX );
-  this.y = this.generateRandom( this.y, this.maxY );
+  this.x = this.generateRandom( 0, this.maxX );
+  this.y = this.generateRandom( 0, this.maxY );
 }
 
 Item.prototype.draw = function() {

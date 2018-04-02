@@ -14,6 +14,10 @@ function Game(canvas) {
   this.numItems = 20;
   this.itemArray = [];
   this.generateItems();
+
+  this.numEnemies = 3;
+  this.enemiesArray = [];
+  this.generateEnemies();
 }
 
 Game.prototype.start = function() {
@@ -57,7 +61,12 @@ Game.prototype.draw = function() {
     item.draw();
   });
 
+  this.enemiesArray.forEach( function(enemy) {
+    enemy.draw();
+  });  
+
   this.player.draw();  
+
 };
 
 Game.prototype.move = function() {
@@ -154,9 +163,8 @@ Game.prototype.itemPlatformCollision = function(item) {
 }
 
 Game.prototype.itemCollision = function() {
-  for (var i = 0; i < this.itemArray.length; i++) {
-    if (
-      this.player.x < this.itemArray[i].x + this.itemArray[i].width &&
+  for( var i = 0; i < this.itemArray.length; i++) {
+    if( this.player.x < this.itemArray[i].x + this.itemArray[i].width &&
       this.player.x + this.player.width > this.itemArray[i].x &&
       this.player.y <= this.itemArray[i].y + this.itemArray[i].height &&
       this.player.y + this.player.height >= this.itemArray[i].y ) {
@@ -164,5 +172,30 @@ Game.prototype.itemCollision = function() {
     }
   }
 };
+
+Game.prototype.generateEnemies = function() {
+  while ( this.enemiesArray.length < this.numEnemies ) {
+    var collision = false;
+    var enemy = new Enemy(this);
+
+    if (this.enemiesArray.length == 0) {
+      this.enemiesArray.push( enemy );
+    } else {
+      // check collision with another enemies
+      for(var i = 0; i < this.enemiesArray.length; i++ ) {        
+        if( enemy.x < this.enemiesArray[i].x + this.enemiesArray[i].width &&
+          enemy.x + enemy.width > this.enemiesArray[i].x &&
+          enemy.y < this.enemiesArray[i].y + this.enemiesArray[i].height &&
+          enemy.y + enemy.height > this.enemiesArray[i].y ) {
+            collision = true;
+        }
+      }
+
+      if( !collision ) {
+        this.enemiesArray.push( enemy );
+      }
+    }      
+  };
+}
 
 Game.prototype.enemyCollision = function() {};
