@@ -14,7 +14,7 @@ function Platform(game) {
   this.generateWidthPlatform();
 }
 
-
+// generate random position and width
 Platform.prototype.generateWidthPlatform = function() {
   
   this.width = this.generateRandom( this.minWidth, this.maxWidth);

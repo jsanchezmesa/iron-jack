@@ -15,15 +15,16 @@ function Item(game) {
   this.generateItem();
 }
 
+// generate random position
 Item.prototype.generateItem = function() {
-  this.x = this.generateRandom( 0, this.maxX );
-  this.y = this.generateRandom( 0, this.maxY );
+  this.x = this.generateRandom( 0 + this.width, this.maxX );
+  this.y = this.generateRandom( 0 + this.width, this.maxY );
 }
 
 Item.prototype.draw = function() {
   this.game.ctx.fillStyle = this.color;
   this.game.ctx.beginPath();
-  this.game.ctx.arc( this.x, this.y, this.width/2, 0, Math.PI*2 );
+  this.game.ctx.arc( this.x, this.y, this.width / 2, 0, Math.PI*2 );
   this.game.ctx.fill();
   this.game.ctx.closePath();
 }

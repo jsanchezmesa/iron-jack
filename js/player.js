@@ -1,8 +1,8 @@
 function Player(game) {
   this.game = game;
 
-  this.img = new Image();
-  this.img.src = "https://vignette.wikia.nocookie.net/the-video-game/images/b/bb/Kirby_Sprite.png/revision/latest?cb=20140110173310";
+  // this.img = new Image();
+  // this.img.src = "https://vignette.wikia.nocookie.net/the-video-game/images/b/bb/Kirby_Sprite.png/revision/latest?cb=20140110173310";
   this.width = 50;
   this.height = 50;
 
@@ -20,11 +20,15 @@ function Player(game) {
 
   this.gravity = 0.25;
 
+  this.color = "red";
+
   this.setListeners();
 }
 
 Player.prototype.draw = function() {
-  this.game.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  //this.game.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  this.game.ctx.fillStyle = this.color;
+  this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
 };
 
 Player.prototype.move = function() {
@@ -62,7 +66,6 @@ Player.prototype.move = function() {
 };
 
 Player.prototype.setListeners = function() {
-  
   document.onkeydown = function(event) {    
     switch (event.keyCode) {      
       // move left
@@ -88,7 +91,7 @@ Player.prototype.setListeners = function() {
         }
         break;
     }
-  }.bind(this);
+  }.bind(this); 
 };
 
 // reset to original position

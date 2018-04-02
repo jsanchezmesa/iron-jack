@@ -15,7 +15,7 @@ function Game(canvas) {
   this.itemArray = [];
   this.generateItems();
 
-  this.numEnemies = 3;
+  this.numEnemies = 4;
   this.enemiesArray = [];
   this.generateEnemies();
 }
@@ -24,20 +24,23 @@ Game.prototype.start = function() {
   this.intervalId = setInterval(
     function() {
       this.clear();
+      this.finished();
       this.move();
       this.draw();
       this.platformCollision();
+      this.enemyCollision();
       this.itemCollision();
     }.bind(this),
     1000 / 60
   );
 };
 
-Game.prototype.pause = function() {
-  clearInterval(this.intervalId);
+Game.prototype.finished = function() {
+  if( this.itemArray.length == 0 ) {
+    alert("YOU WIN");
+    clearInterval(this.intervalId);
+  }
 };
-
-Game.prototype.finished = function() {};
 
 Game.prototype.reset = function() {
   this.pause();
@@ -77,6 +80,7 @@ Game.prototype.move = function() {
   });
 };
 
+// generate random platforms
 Game.prototype.generatePlatforms = function() {
   
   while ( this.platformArray.length < this.numPlatforms ) {
@@ -100,6 +104,7 @@ Game.prototype.generatePlatforms = function() {
   };
 }
 
+// detect collision between player and platforms
 Game.prototype.platformCollision = function() {
   var collision = false;
   var platform;
@@ -124,6 +129,7 @@ Game.prototype.platformCollision = function() {
   }
 };
 
+// generate random items
 Game.prototype.generateItems = function() {
   while ( this.itemArray.length < this.numItems ) {
     var collisionItem = false;
@@ -131,12 +137,21 @@ Game.prototype.generateItems = function() {
     var item = new Item(this);
 
     if (this.itemArray.length == 0) {
-      this.itemArray.push( item );
+      collisionPlatform = this.itemPlatformCollision(item);
+
+      if( collisionPlatform ) {
+        continue;
+      } else {
+        this.itemArray.push( item );
+      }
     } else {
       // check collision with another items
-      for(var i = 0; i < this.itemArray.length; i++ ) {        
-        if( item.x + item.width > this.itemArray[i].x && 
-            this.itemArray[i].x + this.itemArray[i].width > item.x ) {
+      for(var i = 0; i < this.itemArray.length; i++ ) {    
+        var itemPositioned = this.itemArray[i];    
+        if( item.x < itemPositioned.x + itemPositioned.width &&
+            item.x + item.width > itemPositioned.x &&
+            item.y < itemPositioned.y + itemPositioned.height &&
+            item.y + item.height > itemPositioned.y ) {
           collisionItem = true;
         }
       }
@@ -151,6 +166,7 @@ Game.prototype.generateItems = function() {
   };
 }
 
+// detect collision between item and platform
 Game.prototype.itemPlatformCollision = function(item) {
   for( var i = 0; i < this.platformArray.length; i++ ) {
     var platform = this.platformArray[i];
@@ -162,14 +178,13 @@ Game.prototype.itemPlatformCollision = function(item) {
         return true;
       }
   }
-
-  return false;
 }
 
+// detect collision between player and item
 Game.prototype.itemCollision = function() {
   for( var i = 0; i < this.itemArray.length; i++) {
-    if( this.player.x < this.itemArray[i].x + this.itemArray[i].width &&
-      this.player.x + this.player.width > this.itemArray[i].x &&
+    if( this.player.x <= this.itemArray[i].x + this.itemArray[i].width &&
+      this.player.x + this.player.width >= this.itemArray[i].x &&
       this.player.y <= this.itemArray[i].y + this.itemArray[i].height &&
       this.player.y + this.player.height >= this.itemArray[i].y ) {
         this.itemArray.splice(i, 1);
@@ -177,6 +192,7 @@ Game.prototype.itemCollision = function() {
   }
 };
 
+// generate random enemies
 Game.prototype.generateEnemies = function() {
   while ( this.enemiesArray.length < this.numEnemies ) {
     var collision = false;
@@ -202,4 +218,15 @@ Game.prototype.generateEnemies = function() {
   };
 }
 
-Game.prototype.enemyCollision = function() {};
+Game.prototype.enemyCollision = function() {
+  for( var i = 0; i < this.enemiesArray.length; i++) {
+    if( this.player.x < this.enemiesArray[i].x + this.enemiesArray[i].width &&
+      this.player.x + this.player.width > this.enemiesArray[i].x &&
+      this.player.y < this.enemiesArray[i].y + this.enemiesArray[i].height &&
+      this.player.y + this.player.height > this.enemiesArray[i].y ) {
+      
+      alert("GAME OVER");
+      clearInterval(this.intervalId);
+    }
+  }
+};
