@@ -23,6 +23,7 @@ Game.prototype.start = function() {
       this.move();
       this.draw();
       this.platformCollision();
+      this.itemCollision();
     }.bind(this),
     1000 / 60
   );
@@ -152,6 +153,16 @@ Game.prototype.itemPlatformCollision = function(item) {
   return false;
 }
 
-Game.prototype.itemCollision = function() {};
+Game.prototype.itemCollision = function() {
+  for (var i = 0; i < this.itemArray.length; i++) {
+    if (
+      this.player.x < this.itemArray[i].x + this.itemArray[i].width &&
+      this.player.x + this.player.width > this.itemArray[i].x &&
+      this.player.y <= this.itemArray[i].y + this.itemArray[i].height &&
+      this.player.y + this.player.height >= this.itemArray[i].y ) {
+        this.itemArray.splice(i, 1);
+    }
+  }
+};
 
 Game.prototype.enemyCollision = function() {};
