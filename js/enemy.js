@@ -11,7 +11,7 @@ function Enemy(game) {
   this.height = 50;
 
   // select a random speed
-  var speeds = [3, 4, 5, -3, -4, -5];  
+  var speeds = [1, 2, 3, -1, -2, -3];  
   this.dx = speeds[ Math.floor( Math.random() * speeds.length) ];
   this.dy = speeds[ Math.floor( Math.random() * speeds.length) ];
 

@@ -15,7 +15,7 @@ function Game(canvas) {
   this.itemArray = [];
   this.generateItems();
 
-  this.numEnemies = 0;
+  this.numEnemies = 3;
   this.enemiesArray = [];
   this.generateEnemies();
 }
