@@ -14,13 +14,15 @@ function Player(game) {
   this.speed = 5; // speed to move in x or y
   this.dx = 0; // distance to move in x
   this.dy = 0; // distance to move in y
-  this.brakeX = 0.9; // brake x,0 movement
+  this.brakeX = 0.95; // brake x,0 movement
   this.isJumping = false;
   this.isOnPlatform = false;
 
   this.gravity = 0.25;
 
   this.color = "red";
+
+  this.points = 0;
 
   this.setListeners();
 }

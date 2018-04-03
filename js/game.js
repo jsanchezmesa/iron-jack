@@ -15,7 +15,7 @@ function Game(canvas) {
   this.itemArray = [];
   this.generateItems();
 
-  this.numEnemies = 3;
+  this.numEnemies = 0;
   this.enemiesArray = [];
   this.generateEnemies();
 }
@@ -39,16 +39,20 @@ Game.prototype.finished = function() {
   if( this.itemArray.length == 0 ) {
     clearInterval(this.intervalId);
     this.intervalId = 0;
-    alert("YOU WIN");
+    alert("YOU WIN. Points: " + this.player.points);
+    this.reset();
   }
 };
 
 Game.prototype.reset = function() {
-  this.pause();
   this.intervalId = 0;
   this.player.reset();
   this.platformArray = [];
   this.generatePlatforms();
+  this.itemArray = [];
+  this.generateItems();
+  this.enemiesArray = [];
+  this.generateEnemies();
   this.clear();
 };
 
@@ -184,8 +188,6 @@ Game.prototype.generateItems = function() {
   };
 }
 
-
-
 // detect collision between player and item
 Game.prototype.itemCollision = function() {
   for( var i = 0; i < this.itemArray.length; i++) {
@@ -194,6 +196,7 @@ Game.prototype.itemCollision = function() {
       this.player.y <= this.itemArray[i].y + this.itemArray[i].height/2 &&
       this.player.y + this.player.height >= this.itemArray[i].y - this.itemArray[i].height/2 ) {
         this.itemArray.splice(i, 1);
+        this.player.points += 2;
     }
   }
 };
@@ -233,7 +236,8 @@ Game.prototype.enemyCollision = function() {
       
       clearInterval(this.intervalId);
       this.intervalId = 0;
-      alert("GAME OVER");
+      alert("GAME OVER. Points: " + this.player.points);
+      this.reset();
     }
   }
 };
