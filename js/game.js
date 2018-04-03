@@ -188,10 +188,10 @@ Game.prototype.generateItems = function() {
 // detect collision between player and item
 Game.prototype.itemCollision = function() {
   for( var i = 0; i < this.itemArray.length; i++) {
-    if( this.player.x <= this.itemArray[i].x + this.itemArray[i].width &&
-      this.player.x + this.player.width >= this.itemArray[i].x &&
-      this.player.y <= this.itemArray[i].y + this.itemArray[i].height &&
-      this.player.y + this.player.height >= this.itemArray[i].y ) {
+    if( this.player.x <= this.itemArray[i].x + this.itemArray[i].width/2 &&
+      this.player.x + this.player.width >= this.itemArray[i].x - this.itemArray[i].width/2 &&
+      this.player.y <= this.itemArray[i].y + this.itemArray[i].height/2 &&
+      this.player.y + this.player.height >= this.itemArray[i].y - this.itemArray[i].height/2 ) {
         this.itemArray.splice(i, 1);
     }
   }
