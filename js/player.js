@@ -66,44 +66,54 @@ Player.prototype.move = function() {
 };
 
 Player.prototype.setListeners = function() {
-  var map = {65: false, 68: false, 74: false};
+  /*  
+      65 => A key
+      68 => D key
+      74 => J key
+      83 => S key
+  */
+  var map = {65: false, 68: false, 74: false, 83:false};
   document.onkeydown = function(event) {   
     
     map[event.keyCode] = true;
 
-    /*  
-      65 => A key
-      68 => D key
-      74 => J key
-    */
-
-    if( map[65] && map[74] ) {
+    if( map[83] && map[74] ) {
+      // S & J
+      if( this.isOnPlatform ) {
+        this.isJumping = true;
+        this.dy = 25;
+        this.y += this.dy;
+      }
+    } else if( map[65] && map[74] ) {
+      // A & J
       if (!this.isJumping) {
         this.isJumping = true;
-        this.dy = -1 * this.speed * 2.5;
+        this.dy = -1 * this.speed * 2;
         if (this.dx > -this.speed) {
           this.dx -= 2;
         }
       }
-      console.log("izquierda");
     } else if( map[68] && map[74] ) {
+      // D & J
       if (!this.isJumping) {
         this.isJumping = true;
-        this.dy = -1 * this.speed * 2.5;
+        this.dy = -1 * this.speed * 2;
         if (this.dx < this.speed) {
           this.dx += 2;
         }
       }
-      console.log("derecha");
     } else if( map[65] ) {
+      // A
       if (this.dx > -this.speed) {
         this.dx -= 2;
       }
     } else if( map[68] ) {
+      // D
       if (this.dx < this.speed) {
         this.dx += 2;
       }
     } else if( map[74] ) {
+      // J
       if (!this.isJumping) {
         this.isJumping = true;
         this.dy = -1 * this.speed * 2.5;
