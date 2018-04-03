@@ -67,32 +67,47 @@ Player.prototype.move = function() {
 
 Player.prototype.setListeners = function() {
   var map = {65: false, 68: false, 74: false};
-  
   document.onkeydown = function(event) {   
+    
     map[event.keyCode] = true;
-    switch (event.keyCode) {      
-      // move left
-      // it applies inertia
-      case 65: // A key
+
+    /*  
+      65 => A key
+      68 => D key
+      74 => J key
+    */
+
+    if( map[65] && map[74] ) {
+      if (!this.isJumping) {
+        this.isJumping = true;
+        this.dy = -1 * this.speed * 2.5;
         if (this.dx > -this.speed) {
           this.dx -= 2;
         }
-        break;
-      // move right
-      // it applies inertia
-      case 68: // D key
+      }
+      console.log("izquierda");
+    } else if( map[68] && map[74] ) {
+      if (!this.isJumping) {
+        this.isJumping = true;
+        this.dy = -1 * this.speed * 2.5;
         if (this.dx < this.speed) {
           this.dx += 2;
         }
-        break;
-      // jump
-      // if player is on floor, it decrease distance (move up) in y
-      case 74: // J key
-        if (!this.isJumping) {
-          this.isJumping = true;
-          this.dy = -1 * this.speed * 2.5;
-        }
-        break;
+      }
+      console.log("derecha");
+    } else if( map[65] ) {
+      if (this.dx > -this.speed) {
+        this.dx -= 2;
+      }
+    } else if( map[68] ) {
+      if (this.dx < this.speed) {
+        this.dx += 2;
+      }
+    } else if( map[74] ) {
+      if (!this.isJumping) {
+        this.isJumping = true;
+        this.dy = -1 * this.speed * 2.5;
+      }
     }
   }.bind(this);
 
