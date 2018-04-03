@@ -15,7 +15,7 @@ function Game(canvas) {
   this.itemArray = [];
   this.generateItems();
 
-  this.numEnemies = 3;
+  this.numEnemies = 0;
   this.enemiesArray = [];
   this.generateEnemies();
 }
@@ -129,6 +129,23 @@ Game.prototype.platformCollision = function() {
   }
 };
 
+// detect collision between item and platform
+Game.prototype.itemPlatformCollision = function(item) {
+  var collision = false;
+  for( var i = 0; i < this.platformArray.length; i++ ) {
+    var platform = this.platformArray[i];
+
+    if( item.x - item.width/2 < platform.x + platform.width &&
+      item.x + item.width/2 > platform.x &&
+      item.y - item.height/2 < platform.y + platform.height &&
+      item.y + item.height/2 > platform.y ) {
+        collision = true;
+    }
+  }
+
+  return collision;
+}
+
 // generate random items
 Game.prototype.generateItems = function() {
   while ( this.itemArray.length < this.numItems ) {
@@ -166,19 +183,7 @@ Game.prototype.generateItems = function() {
   };
 }
 
-// detect collision between item and platform
-Game.prototype.itemPlatformCollision = function(item) {
-  for( var i = 0; i < this.platformArray.length; i++ ) {
-    var platform = this.platformArray[i];
 
-    if( item.x < platform.x + platform.width &&
-      item.x + item.width > platform.x &&
-      item.y < platform.y + platform.height &&
-      item.y + item.height > platform.y ) {
-        return true;
-      }
-  }
-}
 
 // detect collision between player and item
 Game.prototype.itemCollision = function() {
