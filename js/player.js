@@ -67,19 +67,7 @@ Player.prototype.move = function() {
 
 Player.prototype.setListeners = function() {
   var map = {65: false, 68: false, 74: false};
-  /*$(document).keydown(function(e) {
-      if (e.keyCode in map) {
-          map[e.keyCode] = true;
-          if (map[68] && map[74]) {
-              // FIRE EVENT
-            console.log("salto");
-          }
-      }
-  }).keyup(function(e) {
-      if (e.keyCode in map) {
-          map[e.keyCode] = false;
-      }
-  }); */
+  
   document.onkeydown = function(event) {   
     map[event.keyCode] = true;
     switch (event.keyCode) {      

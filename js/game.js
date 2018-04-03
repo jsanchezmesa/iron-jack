@@ -15,7 +15,7 @@ function Game(canvas) {
   this.itemArray = [];
   this.generateItems();
 
-  this.numEnemies = 0;
+  this.numEnemies = 3;
   this.enemiesArray = [];
   this.generateEnemies();
 }
@@ -37,8 +37,8 @@ Game.prototype.start = function() {
 
 Game.prototype.finished = function() {
   if( this.itemArray.length == 0 ) {
-    alert("YOU WIN");
     clearInterval(this.intervalId);
+    alert("YOU WIN");
   }
 };
 
@@ -225,8 +225,8 @@ Game.prototype.enemyCollision = function() {
       this.player.y < this.enemiesArray[i].y + this.enemiesArray[i].height &&
       this.player.y + this.player.height > this.enemiesArray[i].y ) {
       
-      alert("GAME OVER");
       clearInterval(this.intervalId);
+      alert("GAME OVER");
     }
   }
 };
