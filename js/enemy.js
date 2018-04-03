@@ -4,14 +4,11 @@ function Enemy(game) {
   this.x = 0;
   this.y = 0;
 
-  // this.img = new Image();
-  // this.img.src = "https://vignette.wikia.nocookie.net/puffleville/images/2/26/Yellow_Bird_Sprite.png/revision/latest?cb=20120504215330";
-
   this.width = 50;
   this.height = 50;
 
   // select a random speed
-  var speeds = [1, 2, 3, -1, -2, -3];  
+  var speeds = [2, 3, 4, -2, -3, -4];  
   this.dx = speeds[ Math.floor( Math.random() * speeds.length) ];
   this.dy = speeds[ Math.floor( Math.random() * speeds.length) ];
 
@@ -30,7 +27,6 @@ Enemy.prototype.generateEnemy = function() {
 }
 
 Enemy.prototype.draw = function() {
-  //this.game.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   this.game.ctx.fillStyle = this.color;
   this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
 }

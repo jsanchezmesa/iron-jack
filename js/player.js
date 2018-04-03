@@ -1,8 +1,6 @@
 function Player(game) {
   this.game = game;
 
-  // this.img = new Image();
-  // this.img.src = "https://vignette.wikia.nocookie.net/the-video-game/images/b/bb/Kirby_Sprite.png/revision/latest?cb=20140110173310";
   this.width = 50;
   this.height = 50;
 
@@ -28,7 +26,6 @@ function Player(game) {
 }
 
 Player.prototype.draw = function() {
-  //this.game.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   this.game.ctx.fillStyle = this.color;
   this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
 };

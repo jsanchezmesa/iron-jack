@@ -6,16 +6,20 @@ window.onload = function() {
   var pauseButton = document.getElementById("pause-game");
   var resetButton = document.getElementById("reset-game");
 
+  // if there is a started game, the button does nothing
   startButton.onclick = function() {
-    game.start();
+    if( !game.started ) {
+      game.start();
+    }
+  }
+
+  resetButton.onclick = function() {
+    game.reset();
   }
 
   /* pauseButton.onclick = function() {
     game.pause();
   }
-
-  resetButton.onclick = function() {
-    game.reset(); 
-  }*/
+  */
 
 }

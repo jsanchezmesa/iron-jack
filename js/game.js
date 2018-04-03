@@ -18,6 +18,8 @@ function Game(canvas) {
   this.numEnemies = 3;
   this.enemiesArray = [];
   this.generateEnemies();
+
+  this.started = false;
 }
 
 Game.prototype.start = function() {
@@ -33,6 +35,8 @@ Game.prototype.start = function() {
     }.bind(this),
     1000 / 60
   );
+
+  this.started = true;
 };
 
 Game.prototype.finished = function() {
@@ -45,6 +49,7 @@ Game.prototype.finished = function() {
 };
 
 Game.prototype.reset = function() {
+  this.started = false;
   this.intervalId = 0;
   this.player.reset();
   this.platformArray = [];
