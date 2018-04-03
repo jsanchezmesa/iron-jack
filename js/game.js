@@ -15,7 +15,7 @@ function Game(canvas) {
   this.itemArray = [];
   this.generateItems();
 
-  this.numEnemies = 0;
+  this.numEnemies = 3;
   this.enemiesArray = [];
   this.generateEnemies();
 
@@ -123,7 +123,7 @@ Game.prototype.platformCollision = function() {
     if (
       this.player.x < this.platformArray[i].x + this.platformArray[i].width &&
       this.player.x + this.player.width > this.platformArray[i].x &&
-      this.player.y <= this.platformArray[i].y /* + this.platformArray[i].height */ &&
+      this.player.y <= this.platformArray[i].y &&
       this.player.y + this.player.height >= this.platformArray[i].y ) {
       collision = true;
       platform = this.platformArray[i];
@@ -135,6 +135,7 @@ Game.prototype.platformCollision = function() {
     this.player.isJumping = false;
     this.player.y = platform.y - this.player.height;    
   } else if (!this.player.isJumping && this.player.isOnPlatform) {
+    // player falls on a platform side
     this.player.isJumping = true;
     this.player.isOnPlatform = false;
   }
