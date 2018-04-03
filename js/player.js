@@ -71,7 +71,13 @@ Player.prototype.setListeners = function() {
       74 => J key
       83 => S key
   */
-  var map = {65: false, 68: false, 74: false, 83:false};
+  var map = {
+    65: false, 
+    68: false, 
+    74: false, 
+    83:false
+  };
+  
   document.onkeydown = function(event) {   
     
     map[event.keyCode] = true;

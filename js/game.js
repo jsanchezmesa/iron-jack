@@ -11,11 +11,11 @@ function Game(canvas) {
   this.platformArray = [];
   this.generatePlatforms();
 
-  this.numItems = 20;
+  this.numItems = 25;
   this.itemArray = [];
   this.generateItems();
 
-  this.numEnemies = 3;
+  this.numEnemies = 0;
   this.enemiesArray = [];
   this.generateEnemies();
 
@@ -45,11 +45,12 @@ Game.prototype.finished = function() {
     this.intervalId = 0;
     alert("YOU WIN. Points: " + this.player.points);
     this.reset();
+
+    this.started = false;
   }
 };
 
 Game.prototype.reset = function() {
-  this.started = false;
   this.intervalId = 0;
   this.player.reset();
   this.platformArray = [];
@@ -122,17 +123,17 @@ Game.prototype.platformCollision = function() {
     if (
       this.player.x < this.platformArray[i].x + this.platformArray[i].width &&
       this.player.x + this.player.width > this.platformArray[i].x &&
-      this.player.y <= this.platformArray[i].y /*+ this.platformArray[i].height*/ &&
+      this.player.y <= this.platformArray[i].y /* + this.platformArray[i].height */ &&
       this.player.y + this.player.height >= this.platformArray[i].y ) {
       collision = true;
       platform = this.platformArray[i];
     }
   }
 
-  if (collision) {
+  if (collision && this.player.dy >= 0) {
     this.player.isOnPlatform = true;
     this.player.isJumping = false;
-    this.player.y = platform.y - this.player.height;
+    this.player.y = platform.y - this.player.height;    
   } else if (!this.player.isJumping && this.player.isOnPlatform) {
     this.player.isJumping = true;
     this.player.isOnPlatform = false;
@@ -243,6 +244,8 @@ Game.prototype.enemyCollision = function() {
       this.intervalId = 0;
       alert("GAME OVER. Points: " + this.player.points);
       this.reset();
+
+      this.started = false;
     }
   }
 };
