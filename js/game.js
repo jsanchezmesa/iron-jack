@@ -2,6 +2,8 @@ function Game(canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
 
+  this.level = 1;
+
   this.player = new Player(this);
 
   this.marginWidthPlatform = Math.floor(this.canvas.width * 0.2);
@@ -15,7 +17,14 @@ function Game(canvas) {
   this.itemArray = [];
   this.generateItems();
 
-  this.numEnemies = 3;
+  if( this.level == 1 ) {
+    this.numEnemies = 3;
+  } else if( this.level == 2 ) {
+    this.numEnemies = 4;
+  } else {
+    this.numEnemies = 5;
+  }
+
   this.enemiesArray = [];
   this.generateEnemies();
 
@@ -41,11 +50,14 @@ Game.prototype.start = function() {
 
 Game.prototype.finished = function() {
   if( this.itemArray.length == 0 ) {
-    this.finishMessage("Game Over");
+    this.finishMessage("You win");
+
+    this.level++;
   }
 };
 
 Game.prototype.reset = function() {
+  clearInterval(this.intervalId);
   this.intervalId = 0;
   this.player.reset();
   this.platformArray = [];
@@ -55,6 +67,7 @@ Game.prototype.reset = function() {
   this.enemiesArray = [];
   this.generateEnemies();
   this.clear();
+  this.start();
 };
 
 Game.prototype.clear = function() {
@@ -75,6 +88,16 @@ Game.prototype.draw = function() {
   });  
 
   this.player.draw();  
+
+  // update score
+  var points = document.getElementById("points");
+  points.innerText = "";
+  points.innerText = "Points: " + this.player.points;
+
+  // update level
+  var level = document.getElementById("level");
+  level.innerHTML = "";
+  level.innerText = "Level: " + this.level;
 
 };
 
@@ -251,6 +274,9 @@ Game.prototype.finishMessage = function(message) {
   this.ctx.fillStyle = "red";
   this.ctx.font = "40px sans-serif";
   this.ctx.textAlign = "center";
-  this.ctx.fillText( message, this.canvas.width/2, this.canvas.height/2, this.canvas.width );
+  this.ctx.fillText( message, this.canvas.width/2, this.canvas.height * 0.33, this.canvas.width );
+
+  this.ctx.fillStyle = "black";
+  this.ctx.fillText( this.player.points + " points", this.canvas.width/2, this.canvas.height * 0.66, this.canvas.width);
   this.started = false;
 }
