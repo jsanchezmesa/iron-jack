@@ -22,6 +22,8 @@ function Player(game) {
 
   this.points = 0;
 
+  this.level = 1;
+
   this.setListeners();
 }
 

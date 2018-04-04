@@ -2,8 +2,6 @@ function Game(canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
 
-  this.level = 1;
-
   this.player = new Player(this);
 
   this.marginWidthPlatform = Math.floor(this.canvas.width * 0.2);
@@ -13,13 +11,13 @@ function Game(canvas) {
   this.platformArray = [];
   this.generatePlatforms();
 
-  this.numItems = 25;
+  this.numItems = 1;
   this.itemArray = [];
   this.generateItems();
 
-  if( this.level == 1 ) {
-    this.numEnemies = 0;
-  } else if( this.level == 2 ) {
+  if( this.player.level == 1 ) {
+    this.numEnemies = 3;
+  } else if( this.player.level == 2 ) {
     this.numEnemies = 4;
   } else {
     this.numEnemies = 5;
@@ -48,20 +46,19 @@ Game.prototype.start = function() {
   this.started = true;
 };
 
-Game.prototype.finished = function() {
-  if( this.itemArray.length == 0 ) {
-    this.finishMessage("You win");
-  }
-};
-
 Game.prototype.reset = function() {
   clearInterval(this.intervalId);
   this.intervalId = 0;
   this.player.reset();
   this.platformArray = [];
   this.generatePlatforms();
+
+  if( this.itemArray.length == 0 ) {
+    this.player.level++;
+  }
   this.itemArray = [];
   this.generateItems();
+  
   this.enemiesArray = [];
   this.generateEnemies();
   this.clear();
@@ -95,7 +92,7 @@ Game.prototype.draw = function() {
   // update level
   var level = document.getElementById("level");
   level.innerHTML = "";
-  level.innerText = "Level: " + this.level;
+  level.innerText = "Level: " + this.player.level;
 
 };
 
@@ -254,7 +251,7 @@ Game.prototype.generateEnemies = function() {
   };
 }
 
-// detect collision betwee player and enemies
+// detect collision between player and enemies
 Game.prototype.enemyCollision = function() {
   for( var i = 0; i < this.enemiesArray.length; i++) {
     if( this.player.x < this.enemiesArray[i].x + this.enemiesArray[i].width &&
@@ -262,16 +259,27 @@ Game.prototype.enemyCollision = function() {
       this.player.y < this.enemiesArray[i].y + this.enemiesArray[i].height &&
       this.player.y + this.player.height > this.enemiesArray[i].y ) {
 
-      this.finishMessage("Game Over");
-
+      this.finishMessage("GAME OVER");
+      this.started = false;
+      this.player.points = 0;
     }
+  }
+};
+
+// player gets all items
+Game.prototype.finished = function() {
+  if( this.itemArray.length == 0 ) {
+    this.finishMessage("YOU WIN");
+    
+    setTimeout( function() {
+      this.reset();
+    }.bind(this), 2000);
   }
 };
 
 Game.prototype.finishMessage = function(message) {
   clearInterval(this.intervalId);
   this.intervalId = 0;
-  this.clear();
 
   this.ctx.fillStyle = "red";
   this.ctx.font = "40px sans-serif";
@@ -280,5 +288,4 @@ Game.prototype.finishMessage = function(message) {
 
   this.ctx.fillStyle = "black";
   this.ctx.fillText( this.player.points + " points", this.canvas.width/2, this.canvas.height * 0.66, this.canvas.width);
-  this.started = false;
 }
