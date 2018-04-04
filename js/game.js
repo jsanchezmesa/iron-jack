@@ -15,13 +15,7 @@ function Game(canvas) {
   this.itemArray = [];
   this.generateItems();
 
-  if( this.player.level == 1 ) {
-    this.numEnemies = 3;
-  } else if( this.player.level == 2 ) {
-    this.numEnemies = 4;
-  } else {
-    this.numEnemies = 5;
-  }
+  this.numEnemies = 3;
 
   this.enemiesArray = [];
   this.generateEnemies();
@@ -59,6 +53,7 @@ Game.prototype.reset = function() {
   this.itemArray = [];
   this.generateItems();
   
+  this.updateEnemies();
   this.enemiesArray = [];
   this.generateEnemies();
   this.clear();
@@ -225,6 +220,17 @@ Game.prototype.itemCollision = function() {
   }
 };
 
+// update number of enemies
+Game.prototype.updateEnemies = function() {
+  if( this.player.level == 1 ) {
+    this.numEnemies = 3;
+  } else if( this.player.level == 2 ) {
+    this.numEnemies = 4;
+  } else {
+    this.numEnemies = 5;
+  }
+}
+
 // generate random enemies
 Game.prototype.generateEnemies = function() {
   while ( this.enemiesArray.length < this.numEnemies ) {
@@ -259,6 +265,7 @@ Game.prototype.enemyCollision = function() {
       this.player.y < this.enemiesArray[i].y + this.enemiesArray[i].height &&
       this.player.y + this.player.height > this.enemiesArray[i].y ) {
 
+      this.clear();
       this.finishMessage("GAME OVER");
       this.started = false;
       this.player.points = 0;
