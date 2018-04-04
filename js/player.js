@@ -9,16 +9,20 @@ function Player(game) {
   this.x = this.originX;
   this.y = this.originY;
 
-  this.speed = 5; // speed to move in x or y
+  this.speed = 6; // speed to move in x or y
   this.dx = 0; // distance to move in x
   this.dy = 0; // distance to move in y
-  this.brakeX = 0.99; // brake x,0 movement
+  this.brakeX = 0.98; // brake x,0 movement
   this.isJumping = false;
   this.isOnPlatform = false;
 
-  this.gravity = 0.25;
+  this.gravity = 0.3;
 
-  this.color = "red";
+  //this.color = "red";
+  this.img = new Image();
+  this.img.src = "./img/player.png";
+  this.frameIndex = 0;
+  this.frameWidth = 60;
 
   this.points = 0;
 
@@ -28,15 +32,17 @@ function Player(game) {
 }
 
 Player.prototype.draw = function() {
-  this.game.ctx.fillStyle = this.color;
-  this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
+  /* this.game.ctx.fillStyle = this.color;
+  this.game.ctx.fillRect(this.x, this.y, this.width, this.height); */
+  this.game.ctx.drawImage(this.img, this.frameIndex * this.frameWidth, 0, this.frameWidth, this.img.height, this.x, this.y, this.width, this.height);
 };
 
 Player.prototype.move = function() {
   // if player is not jumping (on a surface), it brakes when it moves to left or right
   if (!this.isJumping ) {
     this.dx *= this.brakeX;
-  }
+    this.frameIndex = 0;
+  } 
   this.x += this.dx; // increment movement in x
 
   // apply gravity when falling

@@ -17,7 +17,6 @@ function Game(canvas) {
   this.generateItems();
 
   this.numEnemies = 3;
-
   this.enemiesArray = [];
   this.generateEnemies();
 
@@ -162,10 +161,10 @@ Game.prototype.itemPlatformCollision = function(item) {
   for( var i = 0; i < this.platformArray.length; i++ ) {
     var platform = this.platformArray[i];
 
-    if( item.x - item.width/2 < platform.x + platform.width &&
-      item.x + item.width/2 > platform.x &&
-      item.y - item.height/2 < platform.y + platform.height &&
-      item.y + item.height/2 > platform.y ) {
+    if( item.x - item.width < platform.x + platform.width &&
+      item.x + item.width > platform.x &&
+      item.y - item.height < platform.y + platform.height &&
+      item.y + item.height > platform.y ) {
         collision = true;
     }
   }
@@ -289,6 +288,6 @@ Game.prototype.finishMessage = function(message) {
   this.ctx.textAlign = "center";
   this.ctx.fillText( message, this.canvas.width/2, this.canvas.height * 0.33, this.canvas.width );
 
-  this.ctx.fillStyle = "black";
+  this.ctx.fillStyle = "white";
   this.ctx.fillText( this.player.points + " points", this.canvas.width/2, this.canvas.height * 0.66, this.canvas.width);
 }

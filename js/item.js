@@ -10,7 +10,9 @@ function Item(game) {
   this.maxX = this.game.canvas.width - this.width;
   this.maxY = this.game.canvas.height - this.height;
 
-  this.color = "blue";
+  //this.color = "blue";
+  this.img = new Image();
+  this.img.src = "./img/item.png";
 
   this.generateItem();
 }
@@ -22,11 +24,12 @@ Item.prototype.generateItem = function() {
 }
 
 Item.prototype.draw = function() {
-  this.game.ctx.fillStyle = this.color;
+  /* this.game.ctx.fillStyle = this.color;
   this.game.ctx.beginPath();
   this.game.ctx.arc( this.x, this.y, this.width / 2, 0, Math.PI*2 );
   this.game.ctx.fill();
-  this.game.ctx.closePath();
+  this.game.ctx.closePath(); */
+  this.game.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
 }
 
 Item.prototype.generateRandom = function(min, max) {

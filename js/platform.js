@@ -9,8 +9,8 @@ function Platform(game) {
   this.minWidth = 30;
   this.height = 10;    
   
-  this.color = "grey";
-  
+  this.color = "red";
+
   this.generateWidthPlatform();
 }
 
@@ -36,4 +36,14 @@ Platform.prototype.generateRandom = function(min, max) {
 Platform.prototype.draw = function() {
   this.game.ctx.fillStyle = this.color;
   this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
+}
+
+Platform.prototype.collidesWith = function(player){
+  if( player.x < this.x + this.width &&
+      player.x + player.width > this.x &&
+      player.y <= this.y &&
+      player.y + player.height >= this.y ) {
+        return true;
+      }
+  return false;
 }

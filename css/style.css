@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
 
-canvas {
-  border: 1px solid black;
+body {
+  font-family: "Varela Round", sans-serif;
+  font-size: 20px;
+  background-color: grey;
+  color: white;
 }
 
 .container {
