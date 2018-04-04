@@ -9,14 +9,14 @@ function Player(game) {
   this.x = this.originX;
   this.y = this.originY;
 
-  this.speed = 6; // speed to move in x or y
+  this.speed = 5; // speed to move in x or y
   this.dx = 0; // distance to move in x
   this.dy = 0; // distance to move in y
   this.brakeX = 0.98; // brake x,0 movement
   this.isJumping = false;
   this.isOnPlatform = false;
 
-  this.gravity = 0.3;
+  this.gravity = 0.25;
 
   //this.color = "red";
   this.img = new Image();
@@ -41,7 +41,6 @@ Player.prototype.move = function() {
   // if player is not jumping (on a surface), it brakes when it moves to left or right
   if (!this.isJumping ) {
     this.dx *= this.brakeX;
-    this.frameIndex = 0;
   } 
   this.x += this.dx; // increment movement in x
 
@@ -74,31 +73,36 @@ Player.prototype.move = function() {
 
 Player.prototype.setListeners = function() {
   /*  
-      65 => A key
-      68 => D key
-      74 => J key
-      83 => S key
+      37 => Left Arrow
+      38 => Up Arrow
+      39 => Right Arrow
+      40 => Down Arrow
   */
   var map = {
-    65: false, 
-    68: false, 
-    74: false, 
-    83: false
+    37: false, 
+    38: false, 
+    39: false, 
+    40: false
   };
   
   document.onkeydown = function(event) {   
     
     map[event.keyCode] = true;
 
-    if( map[83] && map[74] ) {
-      // S & J
+    if( map[40] && map[38] ) {
+      // Down & Up
       if( this.isOnPlatform ) {
         this.isJumping = true;
         this.dy = this.gravity * 100;
         this.y += this.dy;
       }
-    } else if( map[65] && map[74] ) {
-      // A & J
+      if( this.dx > 0 ) {
+        this.frameIndex = 1;
+      } else {
+        this.frameIndex = 3;
+      }
+    } else if( map[37] && map[38] ) {
+      // Left & Up
       if (!this.isJumping) {
         this.isJumping = true;
         this.dy = -1 * this.speed * 2;
@@ -106,8 +110,9 @@ Player.prototype.setListeners = function() {
           this.dx -= 2;
         }
       }
-    } else if( map[68] && map[74] ) {
-      // D & J
+      this.frameIndex = 3;
+    } else if( map[39] && map[38] ) {
+      // Right & Up
       if (!this.isJumping) {
         this.isJumping = true;
         this.dy = -1 * this.speed * 2;
@@ -115,22 +120,31 @@ Player.prototype.setListeners = function() {
           this.dx += 2;
         }
       }
-    } else if( map[65] ) {
-      // A
+      this.frameIndex = 1;
+    } else if( map[37] ) {
+      // Left
       if (this.dx > -this.speed) {
         this.dx -= 2;
       }
-    } else if( map[68] ) {
-      // D
+      this.frameIndex = 2;
+    } else if( map[39] ) {
+      // Right
       if (this.dx < this.speed) {
         this.dx += 2;
       }
-    } else if( map[74] ) {
-      // J
+      this.frameIndex = 0;
+    } else if( map[38] ) {
+      // Up
       if (!this.isJumping) {
         this.isJumping = true;
         this.dy = -1 * this.speed * 2.5;
       }
+
+      if( this.dx > 0 ) {
+        this.frameIndex = 1;
+      } else {
+        this.frameIndex = 3;
+      } 
     }
   }.bind(this);
 
