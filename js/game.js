@@ -2,6 +2,7 @@ function Game(canvas) {
   this.canvas = canvas;
   this.ctx = this.canvas.getContext("2d");
 
+  this.background = new Background(this);
   this.player = new Player(this);
 
   this.marginWidthPlatform = Math.floor(this.canvas.width * 0.2);
@@ -11,7 +12,7 @@ function Game(canvas) {
   this.platformArray = [];
   this.generatePlatforms();
 
-  this.numItems = 1;
+  this.numItems = 25;
   this.itemArray = [];
   this.generateItems();
 
@@ -65,6 +66,8 @@ Game.prototype.clear = function() {
 };
 
 Game.prototype.draw = function() {
+  this.background.draw();
+
   this.platformArray.forEach(function(platform) {
     platform.draw();
   });

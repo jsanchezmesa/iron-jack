@@ -131,7 +131,6 @@ Player.prototype.setListeners = function() {
   document.onkeyup = function(event) {
     map[event.keyCode] = false;
   }
-
 };
 
 // reset to original position
