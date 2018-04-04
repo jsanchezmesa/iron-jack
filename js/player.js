@@ -136,4 +136,6 @@ Player.prototype.setListeners = function() {
 Player.prototype.reset = function() {
   this.x = this.originX;
   this.y = this.originY;
+  this.dx = 0;
+  this.dy = 0;
 };
