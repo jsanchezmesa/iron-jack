@@ -41,12 +41,7 @@ Game.prototype.start = function() {
 
 Game.prototype.finished = function() {
   if( this.itemArray.length == 0 ) {
-    clearInterval(this.intervalId);
-    this.intervalId = 0;
-    alert("YOU WIN. Points: " + this.player.points);
-    this.reset();
-
-    this.started = false;
+    this.finishMessage("Game Over");
   }
 };
 
@@ -234,19 +229,28 @@ Game.prototype.generateEnemies = function() {
   };
 }
 
+// detect collision betwee player and enemies
 Game.prototype.enemyCollision = function() {
   for( var i = 0; i < this.enemiesArray.length; i++) {
     if( this.player.x < this.enemiesArray[i].x + this.enemiesArray[i].width &&
       this.player.x + this.player.width > this.enemiesArray[i].x &&
       this.player.y < this.enemiesArray[i].y + this.enemiesArray[i].height &&
       this.player.y + this.player.height > this.enemiesArray[i].y ) {
-      
-      clearInterval(this.intervalId);
-      this.intervalId = 0;
-      alert("GAME OVER. Points: " + this.player.points);
-      this.reset();
 
-      this.started = false;
+      this.finishMessage("Game Over");
+
     }
   }
 };
+
+Game.prototype.finishMessage = function(message) {
+  clearInterval(this.intervalId);
+  this.intervalId = 0;
+  this.clear();
+
+  this.ctx.fillStyle = "red";
+  this.ctx.font = "40px sans-serif";
+  this.ctx.textAlign = "center";
+  this.ctx.fillText( message, this.canvas.width/2, this.canvas.height/2, this.canvas.width );
+  this.started = false;
+}

@@ -2,12 +2,18 @@ window.onload = function() {
   var canvas = document.getElementById("iron-jack");
   var game = new Game(canvas);
 
+  var gameContainer = document.getElementById("game");
+  var startContainer = document.getElementById("start");
+  
   var startButton = document.getElementById("start-game");
-  var pauseButton = document.getElementById("pause-game");
   var resetButton = document.getElementById("reset-game");
 
   // if there is a started game, the button does nothing
   startButton.onclick = function() {
+
+    startContainer.style.display = "none";
+    gameContainer.style.display = "block";
+
     if( !game.started ) {
       game.start();
     }
@@ -16,10 +22,4 @@ window.onload = function() {
   resetButton.onclick = function() {
     game.reset();
   }
-
-  /* pauseButton.onclick = function() {
-    game.pause();
-  }
-  */
-
 }

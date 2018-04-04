@@ -12,7 +12,7 @@ function Player(game) {
   this.speed = 5; // speed to move in x or y
   this.dx = 0; // distance to move in x
   this.dy = 0; // distance to move in y
-  this.brakeX = 0.97; // brake x,0 movement
+  this.brakeX = 0.99; // brake x,0 movement
   this.isJumping = false;
   this.isOnPlatform = false;
 
@@ -75,7 +75,7 @@ Player.prototype.setListeners = function() {
     65: false, 
     68: false, 
     74: false, 
-    83:false
+    83: false
   };
   
   document.onkeydown = function(event) {   
