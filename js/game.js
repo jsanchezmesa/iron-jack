@@ -12,7 +12,7 @@ function Game(canvas) {
   this.platformArray = [];
   this.generatePlatforms();
 
-  this.numItems = 1;
+  this.numItems = 25;
   this.itemArray = [];
   this.generateItems();
 
@@ -212,15 +212,12 @@ Game.prototype.generateItems = function() {
 
 // detect collision between player and item
 Game.prototype.itemCollision = function() {
-  for( var i = 0; i < this.itemArray.length; i++) {
-    if( this.player.x <= this.itemArray[i].x + this.itemArray[i].width/2 &&
-      this.player.x + this.player.width >= this.itemArray[i].x - this.itemArray[i].width/2 &&
-      this.player.y <= this.itemArray[i].y + this.itemArray[i].height/2 &&
-      this.player.y + this.player.height >= this.itemArray[i].y - this.itemArray[i].height/2 ) {
-        this.itemArray.splice(i, 1);
-        this.player.points += 2;
+  this.itemArray.forEach( function(e, i) {
+    if( e.collidesWith(this.player) ) {
+      this.itemArray.splice( i, 1 );
+      this.player.points += 2;
     }
-  }
+  }.bind(this));
 };
 
 // update number of enemies
@@ -262,18 +259,14 @@ Game.prototype.generateEnemies = function() {
 
 // detect collision between player and enemies
 Game.prototype.enemyCollision = function() {
-  for( var i = 0; i < this.enemiesArray.length; i++) {
-    if( this.player.x < this.enemiesArray[i].x + this.enemiesArray[i].width &&
-      this.player.x + this.player.width > this.enemiesArray[i].x &&
-      this.player.y < this.enemiesArray[i].y + this.enemiesArray[i].height &&
-      this.player.y + this.player.height > this.enemiesArray[i].y ) {
-
+  this.enemiesArray.forEach( function(e) {
+    if( e.collidesWith(this.player) ) {
       this.clear();
       this.finishMessage("GAME OVER");
       this.started = false;
       this.player.points = 0;
     }
-  }
+  }.bind(this));
 };
 
 // player gets all items

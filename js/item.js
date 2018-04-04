@@ -32,3 +32,14 @@ Item.prototype.draw = function() {
 Item.prototype.generateRandom = function(min, max) {
   return Math.floor( Math.random() * (max-min+1)) + min;
 }
+
+Item.prototype.collidesWith = function(player){
+  if( player.x <= this.x + this.width/2 &&
+      player.x + player.width >= this.x - this.width/2 &&
+      player.y <= this.y + this.height/2 &&
+      player.y + player.height >= this.y - this.height/2 ) {
+      
+      return true;
+  }
+  return false;
+}

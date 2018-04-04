@@ -43,6 +43,12 @@ Enemy.prototype.draw = function() {
 }
 
 Enemy.prototype.collidesWith = function(player){
+  if( player.x < this.x + this.width &&
+      player.x + player.width > this.x &&
+      player.y < this.y + this.height &&
+      player.y + player.height > this.y ) {
+        return true;
+      }
   return false;
 }
 
