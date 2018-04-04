@@ -12,7 +12,7 @@ function Game(canvas) {
   this.platformArray = [];
   this.generatePlatforms();
 
-  this.numItems = 25;
+  this.numItems = 1;
   this.itemArray = [];
   this.generateItems();
 

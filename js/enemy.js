@@ -8,16 +8,26 @@ function Enemy(game) {
   this.height = 50;
 
   // select a random speed
-  var speeds = [2, 3, 4, -2, -3, -4];  
+  var speeds = [1, 2, 3, -1, -2, -3];  
   this.dx = speeds[ Math.floor( Math.random() * speeds.length) ];
   this.dy = speeds[ Math.floor( Math.random() * speeds.length) ];
 
   this.maxX = this.game.canvas.width - this.width;
   this.maxY = this.game.canvas.height / 2; 
-
-  this.color = "black";
-
+  
   this.generateEnemy();
+
+  //this.color = "black";
+  this.img = new Image();
+  this.img.src = "./img/enemy.png";
+
+  if( this.dx > 0 ) {
+    this.frameIndex = 0;
+  } else {
+    this.frameIndex = 1;
+  }
+
+  this.frameWidth = 60;
 }
 
 // generate random position
@@ -27,8 +37,13 @@ Enemy.prototype.generateEnemy = function() {
 }
 
 Enemy.prototype.draw = function() {
-  this.game.ctx.fillStyle = this.color;
-  this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
+  //this.game.ctx.fillStyle = this.color;
+  //this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
+  this.game.ctx.drawImage(this.img, this.frameIndex * this.frameWidth, 0, this.frameWidth, this.img.height, this.x, this.y, this.width, this.height);
+}
+
+Enemy.prototype.collidesWith = function(player){
+  return false;
 }
 
 Enemy.prototype.move = function() {
@@ -39,9 +54,11 @@ Enemy.prototype.move = function() {
   if (this.x + this.width > this.game.canvas.width) {
     this.x = this.game.canvas.width - this.width;
     this.dx *= -1;
+    this.changeFrame();
   } else if (this.x < 0) {
     this.x = 0;
     this.dx *= -1;
+    this.changeFrame();
   }
 
   // move in y
@@ -55,7 +72,14 @@ Enemy.prototype.move = function() {
     this.y = 0;
     this.dy *= -1;
   }
+}
 
+Enemy.prototype.changeFrame = function() {
+  if( this.frameIndex == 0 ) {
+    this.frameIndex = 1;
+  } else {
+    this.frameIndex = 0;
+  }
 }
 
 Enemy.prototype.generateRandom = function(min, max) {
