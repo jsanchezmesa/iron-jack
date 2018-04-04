@@ -18,7 +18,7 @@ function Game(canvas) {
   this.generateItems();
 
   if( this.level == 1 ) {
-    this.numEnemies = 3;
+    this.numEnemies = 0;
   } else if( this.level == 2 ) {
     this.numEnemies = 4;
   } else {
@@ -51,8 +51,6 @@ Game.prototype.start = function() {
 Game.prototype.finished = function() {
   if( this.itemArray.length == 0 ) {
     this.finishMessage("You win");
-
-    this.level++;
   }
 };
 
@@ -117,6 +115,10 @@ Game.prototype.generatePlatforms = function() {
     var platform = new Platform(this);
 
     if (this.platformArray.length == 0) {
+      // adjust Y position
+      var maxY = this.canvas.height * 0.9;
+      var minY = this.canvas.height / 2;
+      platform.y = Math.floor( (Math.random() * (maxY - minY + 1)) + minY);
       this.platformArray.push(platform);
     } else {
       for(var i = 0; i < this.platformArray.length; i++ ) {        
