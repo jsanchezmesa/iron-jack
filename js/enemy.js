@@ -145,9 +145,9 @@ Enemy.prototype.updateEnemies = function() {
   if( this.game.player.level == 1 ) {
     this.numEnemies = 3;
   } else if( this.game.player.level == 2 ) {
-    this.numEnemies = 4;
-  } else {
-    this.numEnemies = 5;
+    this.numEnemies++;
+  } else if( this.game.player.level == 3 ) {
+    this.numEnemies++;
   }
 }
 
