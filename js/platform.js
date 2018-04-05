@@ -21,8 +21,8 @@ Platform.prototype.generatePlatforms = function() {
   while ( this.platformArray.length < this.numPlatforms ) {
     this.generateWidthPlatform();
     var collision = false;
-
     var platform = {};
+
     platform.game = this.game;
     platform.x = this.x;
     platform.y = this.y;
@@ -33,7 +33,7 @@ Platform.prototype.generatePlatforms = function() {
 
     if (this.platformArray.length == 0) {
       // adjust Y position
-      var maxY = this.game.canvas.height * 0.9;
+      var maxY = this.game.canvas.height * 0.8;
       var minY = this.game.canvas.height / 2;
       platform.y = Math.floor( (Math.random() * (maxY - minY + 1)) + minY)
       this.platformArray.push(platform);

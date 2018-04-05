@@ -28,7 +28,7 @@ function Enemy(game) {
   }
 
   this.frameWidth = 60;
-  this.numEnemies = 0;
+  this.numEnemies = 3;
   this.enemiesArray = [];
   this.generateEnemies();
 }

@@ -12,7 +12,7 @@ function Player(game) {
   this.speed = 5; // speed to move in x or y
   this.dx = 0; // distance to move in x
   this.dy = 0; // distance to move in y
-  this.brakeX = 0.97; // brake x,0 movement
+  this.brakeX = 0.96; // brake x,0 movement
   this.isJumping = false;
   this.isOnPlatform = false;
 
@@ -105,7 +105,7 @@ Player.prototype.setListeners = function() {
       // Left & Up
       if (!this.isJumping) {
         this.isJumping = true;
-        this.dy = -1 * this.speed * 2.2;
+        this.dy = -1 * this.speed * 2.5;
         if (this.dx > -this.speed) {
           this.dx -= 1;
         }
@@ -115,7 +115,7 @@ Player.prototype.setListeners = function() {
       // Right & Up
       if (!this.isJumping) {
         this.isJumping = true;
-        this.dy = -1 * this.speed * 2.2;
+        this.dy = -1 * this.speed * 2.5;
         if (this.dx < this.speed) {
           this.dx += 1;
         }
@@ -137,7 +137,7 @@ Player.prototype.setListeners = function() {
       // Up
       if (!this.isJumping) {
         this.isJumping = true;
-        this.dy = -1 * this.speed * 2.2;
+        this.dy = -1 * this.speed * 2.5;
       }
 
       if( this.dx > 0 ) {
