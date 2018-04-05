@@ -148,9 +148,11 @@ Player.prototype.setListeners = function() {
     }
   }.bind(this);
 
-  document.onkeyup = function(event) {
-    map[event.keyCode] = false;
-  }
+  setTimeout( function(e) {
+    document.onkeyup = function(event) {
+      map[event.keyCode] = false;
+    }
+  }, 50);
 };
 
 // reset to original position
