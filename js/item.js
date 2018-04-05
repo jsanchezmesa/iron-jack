@@ -16,6 +16,8 @@ function Item(game) {
   this.numItems = 25;
   this.itemArray = [];
   this.generateItems();
+
+  this.itemSound = new Audio("./sounds/coin.mp3");
 }
 
 Item.prototype.generateItems = function() {
@@ -96,6 +98,7 @@ Item.prototype.collidesWith = function(player){
       player.x + player.width >= e.x &&
       player.y <= e.y + e.height &&
       player.y + player.height >= e.y ) {
+        this.itemSound.play();
         this.itemArray.splice(i, 1);
         collision = true;
       }

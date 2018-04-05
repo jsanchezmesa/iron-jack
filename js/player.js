@@ -27,6 +27,8 @@ function Player(game) {
 
   this.level = 1;
 
+  this.jumpSound = new Audio("./sounds/jump.mp3");
+
   this.setListeners();
 }
 
@@ -118,6 +120,7 @@ Player.prototype.setListeners = function() {
         }
       }
       this.frameIndex = 3;
+      this.jumpSound.play();
     } else if( map[39] && map[38] ) {
       // Right & Up
       if (!this.isJumping) {
@@ -128,6 +131,7 @@ Player.prototype.setListeners = function() {
         }
       }
       this.frameIndex = 1;
+      this.jumpSound.play();
     } else if( map[37] ) {
       // Left
       if (this.dx > -this.speed) {
@@ -152,6 +156,7 @@ Player.prototype.setListeners = function() {
       } else {
         this.frameIndex = 3;
       } 
+      this.jumpSound.play();
     }
   }.bind(this);
 

@@ -9,6 +9,10 @@ function Game(canvas) {
   this.items = new Item(this);
 
   this.started = false;
+
+  this.music = new Audio("./sounds/music.mp3");
+  this.fail = new Audio("./sounds/fail.mp3");
+  this.win = new Audio("./sounds/win.mp3");
 }
 
 Game.prototype.start = function() {
@@ -24,7 +28,8 @@ Game.prototype.start = function() {
     }.bind(this),
     1000 / 60
   );
-
+  this.music.play();
+  this.music.loop = true;
   this.started = true;
 };
 
@@ -100,6 +105,8 @@ Game.prototype.enemyCollision = function() {
   if (this.enemies.collidesWith(this.player)) {
     this.clear();
     this.finishMessage("GAME OVER");
+    this.music.pause();
+    this.fail.play();
     this.started = false;
     this.player.points = 0;
   }
@@ -109,7 +116,8 @@ Game.prototype.enemyCollision = function() {
 Game.prototype.finished = function() {
   if (this.items.itemArray.length == 0) {
     this.finishMessage("YOU WIN");
-
+    this.music.pause();
+    this.win.play();
     setTimeout(
       function() {
         this.reset();
