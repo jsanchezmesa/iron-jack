@@ -10,10 +10,8 @@ function Item(game) {
   this.maxX = this.game.canvas.width - this.width;
   this.maxY = this.game.canvas.height - this.height;
 
-  //this.color = "blue";
   this.img = new Image();
   this.img.src = "./img/item.png";
-
 
   this.numItems = 25;
   this.itemArray = [];
@@ -63,9 +61,9 @@ Item.prototype.platformCollision = function(item) {
   var collision = false;
 
   this.game.platforms.platformArray.forEach( function(e) {
-    if( item.x - item.width < e.x + e.width &&
+    if( item.x < e.x + e.width &&
       item.x + item.width > e.x &&
-      item.y - item.height < e.y + e.height &&
+      item.y < e.y + e.height &&
       item.y + item.height > e.y ) {
         
       collision = true;

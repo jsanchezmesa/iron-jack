@@ -52,16 +52,6 @@ Game.prototype.draw = function() {
   this.enemies.draw();
 
   this.player.draw();
-
-  // update score
-  var points = document.getElementById("points");
-  points.innerText = "";
-  points.innerText = "Points: " + this.player.points;
-
-  // update level
-  var level = document.getElementById("level");
-  level.innerHTML = "";
-  level.innerText = "Level: " + this.player.level;
 };
 
 Game.prototype.move = function() {
@@ -96,25 +86,6 @@ Game.prototype.platformCollision = function() {
     this.player.isJumping = true;
     this.player.isOnPlatform = false;
   }
-};
-
-// detect collision between item and platform
-Game.prototype.itemPlatformCollision = function(item) {
-  var collision = false;
-  for (var i = 0; i < this.platforms.platformArray.length; i++) {
-    var platform = this.platforms.platformArray[i];
-
-    if (
-      item.x - item.width < platform.x + platform.width &&
-      item.x + item.width > platform.x &&
-      item.y - item.height < platform.y + platform.height &&
-      item.y + item.height > platform.y
-    ) {
-      collision = true;
-    }
-  }
-
-  return collision;
 };
 
 // detect collision between player and item

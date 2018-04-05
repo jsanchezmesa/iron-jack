@@ -12,13 +12,12 @@ function Player(game) {
   this.speed = 5; // speed to move in x or y
   this.dx = 0; // distance to move in x
   this.dy = 0; // distance to move in y
-  this.brakeX = 0.96; // brake x,0 movement
+  this.brakeX = 0.96; // brake x movement
   this.isJumping = false;
   this.isOnPlatform = false;
 
   this.gravity = 0.25;
 
-  //this.color = "red";
   this.img = new Image();
   this.img.src = "./img/player.png";
   this.frameIndex = 0;
@@ -32,9 +31,17 @@ function Player(game) {
 }
 
 Player.prototype.draw = function() {
-  /* this.game.ctx.fillStyle = this.color;
-  this.game.ctx.fillRect(this.x, this.y, this.width, this.height); */
   this.game.ctx.drawImage(this.img, this.frameIndex * this.frameWidth, 0, this.frameWidth, this.img.height, this.x, this.y, this.width, this.height);
+
+  // update score
+  var points = document.getElementById("points");
+  points.innerText = "";
+  points.innerText = "Points: " + this.points;
+
+  // update level
+  var level = document.getElementById("level");
+  level.innerHTML = "";
+  level.innerText = "Level: " + this.level;
 };
 
 Player.prototype.move = function() {

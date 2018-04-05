@@ -58,7 +58,6 @@ Platform.prototype.generateWidthPlatform = function() {
   this.width = this.generateRandom( this.minWidth, this.maxWidth);
   
   // it sets minimum and maximum X,Y to generate random values
-
   this.minY = this.game.canvas.height * 0.2;
   this.maxY = this.game.canvas.height - this.game.player.height * 2;
   this.maxX = this.game.canvas.width - this.width;

@@ -21,12 +21,6 @@ function Enemy(game) {
   this.img = new Image();
   this.img.src = "./img/enemy.png";
 
-  if( this.dx > 0 ) {
-    this.frameIndex = 0;
-  } else {
-    this.frameIndex = 1;
-  }
-
   this.frameWidth = 60;
   this.numEnemies = 3;
   this.enemiesArray = [];
@@ -84,6 +78,12 @@ Enemy.prototype.generateRandomPosition = function() {
 Enemy.prototype.draw = function() {
   this.enemiesArray.forEach( function(e) {
     e.game.ctx.drawImage(e.img, e.frameIndex * e.frameWidth, 0, e.frameWidth, e.img.height, e.x, e.y, e.width, e.height);
+
+    if( e.dx > 0 ) {
+      e.frameIndex = 0;
+    } else {
+      e.frameIndex = 1;
+    }
   });
 }
 
