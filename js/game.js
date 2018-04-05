@@ -4,19 +4,13 @@ function Game(canvas) {
 
   this.background = new Background(this);
   this.player = new Player(this);
-
-  this.marginWidthPlatform = Math.floor(this.canvas.width * 0.2);
-  this.marginHeightPlatform = Math.floor(this.canvas.height * 0.1);
-
-  this.numPlatforms = 5;
-  this.platformArray = [];
-  this.generatePlatforms();
-
+  this.platforms = new Platform(this);
+  
   this.numItems = 25;
   this.itemArray = [];
   this.generateItems();
 
-  this.numEnemies = 0;
+  this.numEnemies = 3;
   this.enemiesArray = [];
   this.generateEnemies();
 
@@ -44,8 +38,7 @@ Game.prototype.reset = function() {
   clearInterval(this.intervalId);
   this.intervalId = 0;
   this.player.reset();
-  this.platformArray = [];
-  this.generatePlatforms();
+  this.platforms.reset();
 
   if( this.itemArray.length == 0 ) {
     this.player.level++;
@@ -67,9 +60,7 @@ Game.prototype.clear = function() {
 Game.prototype.draw = function() {
   this.background.draw();
 
-  this.platformArray.forEach(function(platform) {
-    platform.draw();
-  });
+  this.platforms.draw();
 
   this.itemArray.forEach( function(item) {
     item.draw();
@@ -101,46 +92,18 @@ Game.prototype.move = function() {
   });
 };
 
-// generate random platforms
-Game.prototype.generatePlatforms = function() {
-  
-  while ( this.platformArray.length < this.numPlatforms ) {
-    var collision = false;
-    var platform = new Platform(this);
-
-    if (this.platformArray.length == 0) {
-      // adjust Y position
-      var maxY = this.canvas.height * 0.9;
-      var minY = this.canvas.height / 2;
-      platform.y = Math.floor( (Math.random() * (maxY - minY + 1)) + minY);
-      this.platformArray.push(platform);
-    } else {
-      for(var i = 0; i < this.platformArray.length; i++ ) {        
-        if( platform.x + platform.width > this.platformArray[i].x && 
-            this.platformArray[i].x + this.platformArray[i].width > platform.x ) {
-          collision = true;
-        }
-      }
-
-      if( !collision ) {
-        this.platformArray.push( platform );
-      }
-    }      
-  };
-}
-
 // detect collision between player and platforms
 Game.prototype.platformCollision = function() {
   var collision = false;
   var platform;
-  for (var i = 0; i < this.platformArray.length; i++) {
+  for (var i = 0; i < this.platforms.platformArray.length; i++) {
     if (
-      this.player.x < this.platformArray[i].x + this.platformArray[i].width &&
-      this.player.x + this.player.width > this.platformArray[i].x &&
-      this.player.y <= this.platformArray[i].y &&
-      this.player.y + this.player.height >= this.platformArray[i].y ) {
+      this.player.x < this.platforms.platformArray[i].x + this.platforms.platformArray[i].width &&
+      this.player.x + this.player.width > this.platforms.platformArray[i].x &&
+      this.player.y <= this.platforms.platformArray[i].y &&
+      this.player.y + this.player.height >= this.platforms.platformArray[i].y ) {
       collision = true;
-      platform = this.platformArray[i];
+      platform = this.platforms.platformArray[i];
     }
   }
 
@@ -158,8 +121,8 @@ Game.prototype.platformCollision = function() {
 // detect collision between item and platform
 Game.prototype.itemPlatformCollision = function(item) {
   var collision = false;
-  for( var i = 0; i < this.platformArray.length; i++ ) {
-    var platform = this.platformArray[i];
+  for( var i = 0; i < this.platforms.platformArray.length; i++ ) {
+    var platform = this.platforms.platformArray[i];
 
     if( item.x - item.width < platform.x + platform.width &&
       item.x + item.width > platform.x &&

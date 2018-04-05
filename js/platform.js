@@ -11,7 +11,44 @@ function Platform(game) {
   
   this.color = "red";
 
-  this.generateWidthPlatform();
+  this.numPlatforms = 5;
+  this.platformArray = [];
+  this.generatePlatforms();
+}
+
+Platform.prototype.generatePlatforms = function() {
+  
+  while ( this.platformArray.length < this.numPlatforms ) {
+    this.generateWidthPlatform();
+    var collision = false;
+
+    var platform = {};
+    platform.game = this.game;
+    platform.x = this.x;
+    platform.y = this.y;
+    platform.width = this.width;
+    platform.height = this.height;
+    platform.color = this.color;
+
+    if (this.platformArray.length == 0) {
+      // adjust Y position
+      var maxY = this.game.canvas.height * 0.9;
+      var minY = this.game.canvas.height / 2;
+      platform.y = Math.floor( (Math.random() * (maxY - minY + 1)) + minY)
+      this.platformArray.push(platform);
+    } else {
+      for(var i = 0; i < this.platformArray.length; i++ ) {        
+        if( platform.x + platform.width > this.platformArray[i].x && 
+            this.platformArray[i].x + this.platformArray[i].width > platform.x ) {
+          collision = true;
+        }
+      }
+
+      if( !collision ) {
+        this.platformArray.push( platform );
+      }
+    }      
+  };
 }
 
 // generate random position and width
@@ -34,8 +71,10 @@ Platform.prototype.generateRandom = function(min, max) {
 }
 
 Platform.prototype.draw = function() {
-  this.game.ctx.fillStyle = this.color;
-  this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
+  this.platformArray.forEach( function(e) {
+    e.game.ctx.fillStyle = e.color;
+    e.game.ctx.fillRect(e.x, e.y, e.width, e.height);
+  });
 }
 
 Platform.prototype.collidesWith = function(player){
@@ -46,4 +85,9 @@ Platform.prototype.collidesWith = function(player){
         return true;
       }
   return false;
+}
+
+Platform.prototype.reset = function() {
+  this.platformArray = [];
+  this.generatePlatforms();
 }
