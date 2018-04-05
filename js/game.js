@@ -5,14 +5,11 @@ function Game(canvas) {
   this.background = new Background(this);
   this.player = new Player(this);
   this.platforms = new Platform(this);
+  this.enemies = new Enemy(this);
   
   this.numItems = 25;
   this.itemArray = [];
   this.generateItems();
-
-  this.numEnemies = 3;
-  this.enemiesArray = [];
-  this.generateEnemies();
 
   this.started = false;
 }
@@ -46,9 +43,7 @@ Game.prototype.reset = function() {
   this.itemArray = [];
   this.generateItems();
   
-  this.updateEnemies();
-  this.enemiesArray = [];
-  this.generateEnemies();
+  this.enemies.reset();
   this.clear();
   this.start();
 };
@@ -66,9 +61,7 @@ Game.prototype.draw = function() {
     item.draw();
   });
 
-  this.enemiesArray.forEach( function(enemy) {
-    enemy.draw();
-  });  
+  this.enemies.draw();
 
   this.player.draw();  
 
@@ -86,10 +79,7 @@ Game.prototype.draw = function() {
 
 Game.prototype.move = function() {
   this.player.move();
-
-  this.enemiesArray.forEach( function(enemy) {
-    enemy.move();
-  });
+  this.enemies.move();
 };
 
 // detect collision between player and platforms
@@ -182,53 +172,14 @@ Game.prototype.itemCollision = function() {
   }.bind(this));
 };
 
-// update number of enemies
-Game.prototype.updateEnemies = function() {
-  if( this.player.level == 1 ) {
-    this.numEnemies = 3;
-  } else if( this.player.level == 2 ) {
-    this.numEnemies = 4;
-  } else {
-    this.numEnemies = 5;
-  }
-}
-
-// generate random enemies
-Game.prototype.generateEnemies = function() {
-  while ( this.enemiesArray.length < this.numEnemies ) {
-    var collision = false;
-    var enemy = new Enemy(this);
-
-    if (this.enemiesArray.length == 0) {
-      this.enemiesArray.push( enemy );
-    } else {
-      // check collision with another enemies
-      for(var i = 0; i < this.enemiesArray.length; i++ ) {        
-        if( enemy.x < this.enemiesArray[i].x + this.enemiesArray[i].width &&
-          enemy.x + enemy.width > this.enemiesArray[i].x &&
-          enemy.y < this.enemiesArray[i].y + this.enemiesArray[i].height &&
-          enemy.y + enemy.height > this.enemiesArray[i].y ) {
-            collision = true;
-        }
-      }
-
-      if( !collision ) {
-        this.enemiesArray.push( enemy );
-      }
-    }      
-  };
-}
-
 // detect collision between player and enemies
 Game.prototype.enemyCollision = function() {
-  this.enemiesArray.forEach( function(e) {
-    if( e.collidesWith(this.player) ) {
-      this.clear();
-      this.finishMessage("GAME OVER");
-      this.started = false;
-      this.player.points = 0;
-    }
-  }.bind(this));
+  if( this.enemies.collidesWith( this.player) ) {
+    this.clear();
+    this.finishMessage("GAME OVER");
+    this.started = false;
+    this.player.points = 0;
+  }
 };
 
 // player gets all items
