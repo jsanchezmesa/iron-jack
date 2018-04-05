@@ -173,4 +173,5 @@ Player.prototype.reset = function() {
   this.y = this.originY;
   this.dx = 0;
   this.dy = 0;
+  this.frameIndex = 0;
 };

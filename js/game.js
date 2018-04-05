@@ -11,6 +11,7 @@ function Game(canvas) {
   this.started = false;
 
   this.music = new Audio("./sounds/music.mp3");
+  this.music.volume = .5;
   this.fail = new Audio("./sounds/fail.mp3");
   this.win = new Audio("./sounds/win.mp3");
 }
