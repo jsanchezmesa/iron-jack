@@ -29,6 +29,7 @@ Platform.prototype.generatePlatforms = function() {
     platform.width = this.width;
     platform.height = this.height;
     platform.color = this.color;
+    platform.__proto__ = this.__proto__;
 
     if (this.platformArray.length == 0) {
       // adjust Y position

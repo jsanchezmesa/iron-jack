@@ -8,9 +8,12 @@ function Enemy(game) {
   this.height = 50;
 
   // select a random speed
-  var speeds = [1, 2, -1, -2];  
-  this.dx = speeds[ Math.floor( Math.random() * speeds.length) ];
-  this.dy = speeds[ Math.floor( Math.random() * speeds.length) ];
+  this.speeds = [
+    [1, 2, -1, -2],
+    [2, 3, -2, -3],
+    [3, 4, -3, -4] ];
+  this.dx = this.randomSpeed();
+  this.dy = this.randomSpeed();
 
   this.maxX = this.game.canvas.width - this.width;
   this.maxY = this.game.canvas.height / 2; 
@@ -25,16 +28,19 @@ function Enemy(game) {
   }
 
   this.frameWidth = 60;
-
-  this.numEnemies = 3;
+  this.numEnemies = 0;
   this.enemiesArray = [];
   this.generateEnemies();
+}
+
+Enemy.prototype.randomSpeed = function() {
+  return this.speeds[this.game.player.level - 1][ Math.floor( Math.random() * this.speeds[this.game.player.level-1].length) ];
 }
 
 // generate random enemies
 Enemy.prototype.generateEnemies = function() {
   while ( this.enemiesArray.length < this.numEnemies ) {
-    this.generateEnemy();
+    this.generateRandomPosition();
     var collision = false;
     var enemy = {};
     enemy.game = this.game;
@@ -42,8 +48,8 @@ Enemy.prototype.generateEnemies = function() {
     enemy.y = this.y;
     enemy.width = this.width;
     enemy.height = this.height;
-    enemy.dx = this.dx;
-    enemy.dy = this.dy;
+    enemy.dx = this.randomSpeed();
+    enemy.dy = this.randomSpeed();
     enemy.frameIndex = this.frameIndex;
     enemy.frameWidth = this.frameWidth;
     enemy.img = this.img;
@@ -70,7 +76,7 @@ Enemy.prototype.generateEnemies = function() {
 }
 
 // generate random position
-Enemy.prototype.generateEnemy = function() {
+Enemy.prototype.generateRandomPosition = function() {
   this.x = this.generateRandom(0, this.maxX );
   this.y = this.generateRandom(0, this.maxY );
 }

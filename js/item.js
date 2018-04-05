@@ -14,22 +14,77 @@ function Item(game) {
   this.img = new Image();
   this.img.src = "./img/item.png";
 
-  this.generateItem();
+
+  this.numItems = 25;
+  this.itemArray = [];
+  this.generateItems();
+}
+
+Item.prototype.generateItems = function() {
+  while( this.itemArray.length < this.numItems ) {
+    this.generateRandomPosition();
+
+    var collision = false;
+    var item = {};
+    item.game = this.game;
+    item.x = this.x;
+    item.y = this.y;
+    item.width = this.width;
+    item.height = this.height;
+    item.img = this.img;
+    item.__proto__ = this.__proto__;
+
+    if( this.itemArray.length == 0 ) {
+      if( !this.platformCollision( item ) ) {
+        this.itemArray.push(item);
+      }
+    } else {
+      // check collision between items
+      this.itemArray.forEach( function(e) {
+        if( item.x < e.x + e.width &&
+          item.x + item.width > e.x &&
+          item.y < e.y + e.height &&
+          item.y + item.height > e.y ) {
+            collision = true;
+          }
+      });
+
+      if( !collision ) {
+        if( !this.platformCollision( item ) ) {
+          this.itemArray.push(item);
+        }
+      }      
+    }
+  }
+}
+
+// collision between platform and items
+Item.prototype.platformCollision = function(item) {
+  var collision = false;
+
+  this.game.platforms.platformArray.forEach( function(e) {
+    if( item.x - item.width < e.x + e.width &&
+      item.x + item.width > e.x &&
+      item.y - item.height < e.y + e.height &&
+      item.y + item.height > e.y ) {
+        
+      collision = true;
+    }
+  })
+
+  return collision;
 }
 
 // generate random position
-Item.prototype.generateItem = function() {
+Item.prototype.generateRandomPosition = function() {
   this.x = this.generateRandom( 0 + this.width, this.maxX );
   this.y = this.generateRandom( 0 + this.width, this.maxY );
 }
 
 Item.prototype.draw = function() {
-  /* this.game.ctx.fillStyle = this.color;
-  this.game.ctx.beginPath();
-  this.game.ctx.arc( this.x, this.y, this.width / 2, 0, Math.PI*2 );
-  this.game.ctx.fill();
-  this.game.ctx.closePath(); */
-  this.game.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  this.itemArray.forEach( function(e) {
+    e.game.ctx.drawImage(e.img, e.x, e.y, e.width, e.height);
+  })
 }
 
 Item.prototype.generateRandom = function(min, max) {
@@ -37,12 +92,24 @@ Item.prototype.generateRandom = function(min, max) {
 }
 
 Item.prototype.collidesWith = function(player){
-  if( player.x <= this.x + this.width/2 &&
-      player.x + player.width >= this.x - this.width/2 &&
-      player.y <= this.y + this.height/2 &&
-      player.y + player.height >= this.y - this.height/2 ) {
-      
-      return true;
+  var collision = false;  
+  this.itemArray.forEach( function(e, i) {
+    if( player.x <= e.x + e.width &&
+      player.x + player.width >= e.x &&
+      player.y <= e.y + e.height &&
+      player.y + player.height >= e.y ) {
+        this.itemArray.splice(i, 1);
+        collision = true;
+      }
+  }.bind(this));
+  
+  return collision;
+}
+
+Item.prototype.reset = function() {
+  if( this.itemArray.length == 0 ) {
+    this.game.player.level++;
   }
-  return false;
+  this.itemArray = [];
+  this.generateItems();
 }
